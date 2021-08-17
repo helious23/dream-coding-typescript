@@ -42,7 +42,43 @@
   }
 
   const maker = CoffeeMaker.makeMachine(2);
-  console.log(maker);
-  maker.fillCoffeeBeans(11);
-  console.log(maker.makeCoffee(2));
+  maker.fillCoffeeBeans(12);
+  // console.log(maker.makeCoffee(2));
+
+  class User {
+    // private firstName: string;
+    // private lastName: string;
+    // getter 사용하여 firstName lastName 변경 사항을 적용.
+    // 그냥 constructor 에 this.fullName = `${this.firstName} ${this.lastName}` 하면 firstName 변경 시 반영되지 않음
+    get fullName(): string {
+      return `${this.firstName} ${this.lastName}`;
+    }
+
+    private internalAge = 4;
+
+    get age(): number {
+      return this.internalAge; // member 변수로 바로 return 도 가능
+    }
+
+    set age(num: number) {
+      if (num < 0) {
+        // 유효성 검사도 가능
+      }
+      this.internalAge = num;
+    }
+
+    // constructor 변수 앞에 public or private 으로 지정하면 member 변수로 만들고 constructor 에서 다시 할당하지 않아도 됨
+    constructor(public firstName: string, private lastName: string) {
+      // this.firstName = firstName;
+      // this.lastName = lastName;
+    }
+  }
+
+  const user = new User("Steve", "Jobs");
+  console.log(user.fullName); // Steve Jobs
+  user.firstName = "Max"; // getter 는 함수로 표현되어 있지만 member 변수처럼 바로 접근해야 됨
+  console.log(user.fullName); // Max Jobs
+
+  user.age = 6; // setter 호출하여 member 변수의 값 재할당
+  console.log(user.age); // 6
 }
