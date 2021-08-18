@@ -22,7 +22,7 @@
   }
 
   class CoffeeMachine implements CoffeeMaker, CommercialCoffeeMaker {
-    // CoffeeMachine class 는 CoffeeMaker interface 를 구현
+    // CoffeeMachine class 는 CoffeeMaker interface 를 구현 (implement)
     private static BEANS_GRAMM_PER_SHOP: number = 7;
     private coffeeBeans: number = 0;
 
