@@ -11,10 +11,17 @@
   };
 
   interface CoffeeMaker {
-    makeCoffee(shots: number): CoffeeCup;
+    // makeCoffee(shots:number): CoffeeCup;
+    makeCoffee: (shots: number) => CoffeeCup;
   }
 
-  class CoffeeMachine implements CoffeeMaker {
+  interface CommercialCoffeeMaker {
+    makeCoffee: (shots: number) => CoffeeCup;
+    fillCoffeeBeans: (beans: number) => void;
+    clean: () => void;
+  }
+
+  class CoffeeMachine implements CoffeeMaker, CommercialCoffeeMaker {
     // CoffeeMachine class 는 CoffeeMaker interface 를 구현
     private static BEANS_GRAMM_PER_SHOP: number = 7;
     private coffeeBeans: number = 0;
@@ -32,6 +39,10 @@
         throw new Error("Value for beans should be greater than 0");
       }
       this.coffeeBeans += beans;
+    }
+
+    clean() {
+      console.log("cleaning the machine...🧼");
     }
 
     private grindBeans(shots: number) {
@@ -72,11 +83,30 @@
     }
   }
 
-  const maker: CoffeeMachine = CoffeeMachine.makeMachine(2);
-  maker.fillCoffeeBeans(12);
-  maker.makeCoffee(2); // private 을 통해 사용자가 사용할 수 있는 method 를 제한
+  class AmateurUser {
+    constructor(private machine: CoffeeMaker) {}
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+    }
+  }
 
-  const maker2: CoffeeMaker = CoffeeMachine.makeMachine(2);
-  maker2.fillCoffeeBeans(12); // CoffeeMaker interface 에는 fillCoffeeBeans 가 정의되어 있지 않으므로 사용 불가
-  maker2.makeCoffee(2);
+  class ProBarista {
+    constructor(private machine: CommercialCoffeeMaker) {}
+    makeCoffee() {
+      const coffee = this.machine.makeCoffee(2);
+      console.log(coffee);
+      this.machine.fillCoffeeBeans(45);
+      this.machine.clean();
+    }
+  }
+
+  const maker: CoffeeMachine = CoffeeMachine.makeMachine(32);
+  const amateur = new AmateurUser(maker);
+  const pro = new ProBarista(maker);
+  // maker 는 CoffeeMachine 으로 생성: CoffeeMaker, CommercialCoffeeMaker  둘 다 implement
+  // AmateurUser 일 경우는 CoffeeMaker, ProBarista 일 경우는 CommercialCoffeemaker
+  // 동일한 CoffeeMachine 을 받았지만 interface 가 다르므로 사용할 수 있는 method 가 달라짐
+  amateur.makeCoffee();
+  pro.makeCoffee();
 }
