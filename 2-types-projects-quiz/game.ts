@@ -3,9 +3,9 @@
  */
 
 let position = { x: 0, y: 0 };
-type Direction = "up" | "down" | "left" | "right";
-const move = (command: Direction) => {
-  switch (command) {
+type Direction = "up" | "down" | "left" | "right" | "he";
+const move = (direction: Direction) => {
+  switch (direction) {
     case "up":
       position.y += 1;
       break;
@@ -18,8 +18,13 @@ const move = (command: Direction) => {
     case "right":
       position.x += 1;
       break;
+    case "he":
+      position.x += 1;
+      break;
     default:
-      throw new Error("unknown direction");
+      const invalid = direction;
+      // 모든 type case 를 switch case 로 다뤘으므로 direction 에는 never type 만 할당될 수 있음.
+      throw new Error(`unknown direction ${invalid}`);
   }
 };
 
