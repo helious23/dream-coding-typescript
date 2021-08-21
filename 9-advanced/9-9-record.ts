@@ -17,5 +17,5 @@
   };
 
   type Product = "cat" | "dog";
-  type NewProduct = Capitalize<Product>; // 'Cat' | 'Dog'
+  type NewProduct = Capitalize<Product>; // 'Cat' | 'Dog' 대문자로 변경
 }
